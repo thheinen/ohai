@@ -17,8 +17,8 @@
 # limitations under the License.
 #
 
-require "ohai/exception"
-require "ohai/log"
+require_relative "../exception"
+require_relative "../log"
 require "mixlib/shellout"
 
 module Ohai

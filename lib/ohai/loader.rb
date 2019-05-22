@@ -17,9 +17,9 @@
 #
 
 require "chef-config/path_helper"
-require "ohai/log"
-require "ohai/mash"
-require "ohai/dsl"
+require_relative "log"
+require_relative "mash"
+require_relative "dsl"
 require "pathname"
 
 module Ohai

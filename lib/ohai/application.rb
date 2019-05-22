@@ -17,8 +17,8 @@
 
 require "chef-config/path_helper"
 require "chef-config/workstation_config_loader"
-require "ohai"
-require "ohai/log"
+require_relative "../ohai"
+require_relative "log"
 require "mixlib/cli"
 require "benchmark"
 
