@@ -78,7 +78,7 @@ Ohai.plugin(:Network) do
     so.stdout.lines do |line|
       line.strip!
       logger.trace("Plugin Network: Parsing #{line}")
-      if line =~ /\\/
+      if /\\/.match?(line)
         parts = line.split('\\')
         route_dest = parts.shift.strip
         route_endings = parts
@@ -189,11 +189,11 @@ Ohai.plugin(:Network) do
         next if line.start_with?("Ring parameters for")
         next if line.strip.nil?
 
-        if line =~ /Pre-set maximums/
+        if /Pre-set maximums/.match?(line)
           type = "max"
           next
         end
-        if line =~ /Current hardware settings/
+        if /Current hardware settings/.match?(line)
           type = "current"
           next
         end
@@ -222,11 +222,11 @@ Ohai.plugin(:Network) do
         next if line.start_with?("Channel parameters for")
         next if line.strip.nil?
 
-        if line =~ /Pre-set maximums/
+        if /Pre-set maximums/.match?(line)
           type = "max"
           next
         end
-        if line =~ /Current hardware settings/
+        if /Current hardware settings/.match?(line)
           type = "current"
           next
         end
@@ -306,7 +306,7 @@ Ohai.plugin(:Network) do
         net_counters[tmp_int] ||= Mash.new
       end
 
-      if line =~ /^\s+(ip6tnl|ipip)/
+      if /^\s+(ip6tnl|ipip)/.match?(line)
         iface[tmp_int][:tunnel_info] = {}
         words = line.split
         words.each_with_index do |word, index|
@@ -476,7 +476,7 @@ Ohai.plugin(:Network) do
 
   # returns the macaddress for interface from a hash of interfaces (iface elsewhere in this file)
   def get_mac_for_interface(interfaces, interface)
-    interfaces[interface][:addresses].select { |k, v| v["family"] == "lladdr" }.first.first unless interfaces[interface][:addresses].nil? || interfaces[interface][:flags].include?("NOARP")
+    interfaces[interface][:addresses].find { |k, v| v["family"] == "lladdr" }.first unless interfaces[interface][:addresses].nil? || interfaces[interface][:flags].include?("NOARP")
   end
 
   # returns the default route with the lowest metric (unspecified metric is 0)
